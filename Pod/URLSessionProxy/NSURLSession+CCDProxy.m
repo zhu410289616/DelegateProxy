@@ -22,10 +22,14 @@
 
 + (NSURLSession *)hook_sessionWithConfiguration:(NSURLSessionConfiguration *)configuration delegate:(id<NSURLSessionDelegate>)delegate delegateQueue: (NSOperationQueue *)queue
 {
-    //TODO: 增加外部 receivers 的注册逻辑
     CCDDelegateDispatcher *dispatcher = [[CCDDelegateDispatcher alloc] init];
     !delegate ?: [dispatcher addSubscriber:delegate];
-    [dispatcher addSubscriber:[CCDURLSessionLogger sharedInstance]];
+    
+    /// 添加外部注册的 receivers 对象；
+    NSDictionary *subDic = [CCDDelegateSubscribers()[@"URLSession"] copy];
+    [subDic enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        [dispatcher addSubscriber:obj];
+    }];
     
     CCDURLSessionProxy *proxy = [[CCDURLSessionProxy alloc] initWithOriginal:delegate accepter:dispatcher];
     proxy.dispatcher = dispatcher;

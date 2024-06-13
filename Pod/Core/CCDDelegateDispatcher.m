@@ -10,24 +10,37 @@
 
 #pragma mark - 注册多个代理订阅者
 
-NSHashTable *CCDDelegateSubscribers(void)
+NSMutableDictionary *CCDDelegateSubscribers(void)
 {
-    static NSHashTable *delegates = nil;
+    static NSMutableDictionary *delegates = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        delegates = [NSHashTable weakObjectsHashTable];
+        delegates = @{}.mutableCopy;
     });
     return delegates;
 }
 
-void CCDDelegateAddSubscriber(id delegate)
+void CCDDelegateAddSubscriber(NSString *key, id delegate)
 {
-    !delegate ?: [CCDDelegateSubscribers() addObject:delegate];
+    if (key.length == 0 || !delegate) {
+        return;
+    }
+    NSMutableDictionary *subDic = CCDDelegateSubscribers()[key];
+    if (!subDic) {
+        subDic = @{}.mutableCopy;
+        CCDDelegateSubscribers()[key] = subDic;
+    }
+    NSString *subKey = [NSString stringWithFormat:@"%p", delegate];
+    subDic[subKey] = delegate;
 }
 
-void CCDDelegateRemoveSubscriber(id delegate)
+void CCDDelegateRemoveSubscriber(NSString *key, id delegate)
 {
-    !delegate ?: [CCDDelegateSubscribers() removeObject:delegate];
+    if (key.length == 0 || !delegate) {
+        return;
+    }
+    NSMutableDictionary *subDic = CCDDelegateSubscribers()[key];
+    !subDic ?: [subDic removeObjectForKey:delegate];
 }
 
 #pragma mark -

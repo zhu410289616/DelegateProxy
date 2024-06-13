@@ -8,6 +8,8 @@
 #import "ViewController.h"
 #import <AFNetworking/AFURLSessionManager.h>
 #import <CCDBucket/CCDLogger.h>
+#import <CCDDelegateProxy/CCDDelegateDispatcher.h>
+#import <CCDDelegateProxy/CCDURLSessionLogger.h>
 #import <Masonry/Masonry.h>
 
 @interface ViewController ()
@@ -37,6 +39,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    CCDDelegateAddSubscriber(@"URLSession", [CCDURLSessionLogger sharedInstance]);
     
 }
 

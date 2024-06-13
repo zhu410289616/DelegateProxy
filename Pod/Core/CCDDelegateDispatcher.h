@@ -11,8 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 注册多个代理订阅者
 
-FOUNDATION_EXPORT void CCDDelegateAddSubscriber(id delegate);
-FOUNDATION_EXPORT void CCDDelegateRemoveSubscriber(id delegate);
+FOUNDATION_EXPORT NSMutableDictionary *CCDDelegateSubscribers(void);
+FOUNDATION_EXPORT void CCDDelegateAddSubscriber(NSString *key, id delegate);
+FOUNDATION_EXPORT void CCDDelegateRemoveSubscriber(NSString *key, id delegate);
 
 #pragma mark -
 
