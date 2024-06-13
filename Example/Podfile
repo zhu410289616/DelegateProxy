@@ -1,0 +1,15 @@
+platform:ios,'9.0'
+#use_frameworks!
+
+target 'Example' do
+  
+  pod 'libextobjc', '~> 0.6'
+  pod 'AFNetworking', '~> 4.0.1'
+  pod 'CocoaLumberjack', '~> 3.7.4'
+  pod 'CCDBucket', :git => 'https://github.com/zhu410289616/Bucket.git', :subspecs => ['Core']
+  pod 'CCDDelegateProxy', :path => '../CCDDelegateProxy.podspec', :subspecs => ['Core', 'URLSessionProxy']
+  pod 'Masonry', '~> 1.1.0'
+  
+end
+
+
